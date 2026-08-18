@@ -20,11 +20,12 @@ export class HeaderComponent extends BasePage {
         this.bancoConocimientoLink = mainNav.getByRole('link', { name: /Banco del Conocimiento|Knowledge Bank/i });
     }
 
-    // Acciones
+    // Navega a la página principal
     async navigate(): Promise<void> {
         await this.page.goto('/');
     }
 
+    // Cambia el idioma de la página haciendo clic en el botón de alternancia de idioma
     async toggleLanguage(): Promise<void> {
         await this.languageToggleButton.click();
     }
