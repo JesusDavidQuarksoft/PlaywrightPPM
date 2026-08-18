@@ -32,6 +32,9 @@ test.describe('Navegación y Filtros Proyectos - Portal Proyectos México', () =
         // Aplicar filtro de Agua y Medio Ambiente
         await projectsPage.applyWaterAndEnvironmentFilter();
 
+        // Hacer scroll a la columna Sector para visualizarla
+        await projectsPage.scrollToSectorColumn();
+
         // Validar que la columna Sector muestre "Agua y Medio Ambiente"
         await expect(projectsPage.cellColumnWaterAndEnvironment).toBeVisible();
         

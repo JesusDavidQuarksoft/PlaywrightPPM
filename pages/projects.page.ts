@@ -72,4 +72,14 @@ export class ProjectsPage extends BasePage {
         await this.selectSectorCheckbox();
         await this.selectWaterAndEnvironmentCheckbox();
     }
+
+    async scrollToSectorColumn(): Promise<void> {
+        await this.cellColumnWaterAndEnvironment.scrollIntoViewIfNeeded();
+        await this.page.waitForTimeout(500);
+    }
+
+    async validateWaterAndEnvironmentVisible(): Promise<boolean> {
+        await this.scrollToSectorColumn();
+        return await this.cellColumnWaterAndEnvironment.isVisible();
+    }
 }
