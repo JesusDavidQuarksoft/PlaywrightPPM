@@ -40,7 +40,7 @@ test.describe('Navegación y Filtros Proyectos - Portal Proyectos México', () =
         
     });
 
-    test('Exportar la información que se muestra en la tabla', async ({ page }) => {
+    test('Exportar la información que se muestra en la tabla en PDF', async ({ page }) => {
         test.setTimeout(60000); // Aumenta el tiempo de espera a 60 segundos para este test específico
         const projectsPage = new ProjectsPage(page);
         // Navegar a la página principal y entrar a Proyectos
@@ -59,6 +59,27 @@ test.describe('Navegación y Filtros Proyectos - Portal Proyectos México', () =
         
         //  exportar la información que se muestra en la tabla a PDF
         await projectsPage.exportTableToPDF();
-    })
+    });
     
+
+    test('Exportar la información que se muestra en la tabla en CSV', async ({ page }) => {
+        test.setTimeout(60000); // Aumenta el tiempo de espera a 60 segundos para este test específico
+        const projectsPage = new ProjectsPage(page);
+        // Navegar a la página principal y entrar a Proyectos
+        await projectsPage.navigate();
+        await projectsPage.goToProjects();
+        await expect(page).toHaveURL(/.*public/);
+
+        // Aplicar filtro de Transporte
+        await projectsPage.applyTransportFilter();
+
+         // Hacer scroll a la columna Sector para visualizarla
+        await projectsPage.scrollToSectorColumnTransport();
+
+        // Validar que la columna Sector muestre "Transporte"
+        await expect(projectsPage.cellColumnTransport).toBeVisible();
+        
+        //  exportar la información que se muestra en la tabla a CSV
+        await projectsPage.exportTableToCSV();
+    });
 });

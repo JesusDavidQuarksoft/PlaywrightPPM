@@ -13,6 +13,7 @@ export class ProjectsPage extends BasePage {
     readonly transportCheckbox: Locator;
     readonly cellColumnTransport: Locator;
     readonly btnExportTablePDF: Locator;
+    readonly btnExportTableCSV: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -27,6 +28,7 @@ export class ProjectsPage extends BasePage {
         this.transportCheckbox = page.getByRole('checkbox', { name: 'Transporte' });
         this.cellColumnTransport = page.getByRole('cell', { name: 'Transporte' }).first();
         this.btnExportTablePDF = page.locator('app-file-export-component > button').first();
+        this.btnExportTableCSV = page.locator('app-file-export-component > button:nth-child(2)');
     }
 
     async navigate(): Promise<void> {
@@ -37,12 +39,12 @@ export class ProjectsPage extends BasePage {
         await this.projectsLink.click();
         // Esperar a que la página de proyectos cargue completamente
         await this.page.waitForLoadState('networkidle');
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(6000);
     }
 
     async filterByTamaulipas(): Promise<void> {
         await this.tamaulipasStateMap.click();
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(6000);
     }
 
     async clearFilters(): Promise<void> {
@@ -50,16 +52,17 @@ export class ProjectsPage extends BasePage {
         await this.page.waitForTimeout(1000);
     }
 
-    async filterByHidrocarbons(): Promise<void> {
-        await this.filterHidrocarbonsTable.waitFor({ state: 'visible', timeout: 10000 });
-        await this.filterHidrocarbonsTable.click({
-            position: {
-                x: 373,
-                y: 63
-            }
-        });
-        await this.page.waitForTimeout(1000);
-    }
+async filterByHidrocarbons(): Promise<void> {
+    await this.filterHidrocarbonsTable.waitFor({ state: 'visible', timeout: 10000 });
+    
+    await this.filterHidrocarbonsTable.click({
+        position: { x: 373, y: 63 },
+        force: true,  
+        timeout: 10000
+    });
+    
+    await this.page.waitForTimeout(1000);
+}
 
     async openFilterTable(): Promise<void> {
         await this.filterButtonTable.click();
@@ -111,6 +114,11 @@ export class ProjectsPage extends BasePage {
 
     async exportTableToPDF(): Promise<void> {
         await this.btnExportTablePDF.click();
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(6000);
+    }
+
+    async exportTableToCSV(): Promise<void> {
+        await this.btnExportTableCSV.click();
+        await this.page.waitForTimeout(6000);
     }
 }
