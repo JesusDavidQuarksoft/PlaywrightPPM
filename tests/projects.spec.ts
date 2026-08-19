@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { ProjectsPage } from '../pages/projects.page';
 
+/* Este archivo contiene pruebas automatizadas para la pagina de Proyectos del Portal Proyectos Mexico y enfocandose principalmente en la pesytaña de Proyectos Nuevos. */
+
 test.describe('Navegación y Filtros Proyectos - Portal Proyectos México', () => {
     // Este Test verifica la navegacion a la sección de Proyectos y en la pestaña de Proyectos Nuevos
     test('Debe filtrar la lista de proyectos al seleccionar Tamaulipas en el mapa', async ({ page }) => {
@@ -39,6 +41,26 @@ test.describe('Navegación y Filtros Proyectos - Portal Proyectos México', () =
         await expect(projectsPage.cellColumnWaterAndEnvironment).toBeVisible();
         
     });
+
+    test('Seleccionar filtro de Agua y Medio ambiente y validar el dato en el canvas', async ({ page }) => {
+        
+        test.setTimeout(60000); // Aumenta el tiempo de espera a 60 segundos para este test específico
+        const projectsPage = new ProjectsPage(page);
+        
+        // Navegar a la página principal y entrar a Proyectos
+        await projectsPage.navigate();
+        await projectsPage.goToProjects();
+        await expect(page).toHaveURL(/.*public/);
+
+        // Aplicar filtro de Agua y Medio Ambiente
+        await projectsPage.applyWaterAndEnvironmentFilter();
+
+        // Validar que el canvas muestre el dato correspondiente a Agua y Medio Ambiente
+        await projectsPage.verifyWaterAndEnvironmentTableVisible();
+        await expect(projectsPage.verifyWaterAndEnvironmentTable).toBeVisible();
+
+    })
+    
 
     test('Exportar la información que se muestra en la tabla en PDF', async ({ page }) => {
         test.setTimeout(60000); // Aumenta el tiempo de espera a 60 segundos para este test específico
