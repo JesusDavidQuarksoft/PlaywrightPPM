@@ -15,6 +15,11 @@ export class ProjectsPage extends BasePage {
   readonly btnExportTablePDF: Locator;
   readonly btnExportTableCSV: Locator;
   readonly verifyWaterAndEnvironmentTable: Locator;
+  readonly verifyPaginationButton: Locator;
+  readonly verifyPaginationButtonLast: Locator;
+  readonly verifyPaginationButtonBack: Locator;
+  readonly verifyPaginationButtonNext: Locator;
+  readonly verifyPaginationNumberText: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -48,6 +53,11 @@ export class ProjectsPage extends BasePage {
     this.btnExportTableCSV = page.locator(
       "app-file-export-component > button:nth-child(2)",
     );
+    this.verifyPaginationButton = page.getByRole('button', { name: '2', exact: true });
+    this.verifyPaginationButtonLast = page.locator('button:nth-child(9)');
+    this.verifyPaginationButtonBack = page.getByRole('button', { name: '<' });
+    this.verifyPaginationButtonNext = page.getByRole('button', { name: '>' });
+    this.verifyPaginationNumberText = page.getByText('Página 9 de');
   }
 
   async navigate(): Promise<void> {
@@ -159,5 +169,28 @@ export class ProjectsPage extends BasePage {
     });
 
     await this.page.waitForTimeout(1000);
+
+    
   }
+
+  async scrollToPaginationButtons(): Promise<void> {
+    await this.verifyPaginationButton.scrollIntoViewIfNeeded();
+    await this.page.waitForTimeout(500);
+  }
+
+  async verifyPaginationFunctionality(): Promise<void> {
+    await this.scrollToPaginationButtons();
+    await this.verifyPaginationButton.click();
+    await this.page.waitForTimeout(1000);
+    await this.verifyPaginationButtonLast.click();
+    await this.page.waitForTimeout(1000);
+    await this.verifyPaginationButtonBack.click();
+    await this.page.waitForTimeout(1000);
+    await this.verifyPaginationButtonNext.click();
+    await this.page.waitForTimeout(1000);
+    await this.verifyPaginationNumberText.click();
+    await this.page.waitForTimeout(1000);
+  }
+
 }
+

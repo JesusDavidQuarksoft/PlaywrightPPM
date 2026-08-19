@@ -4,17 +4,16 @@ import { ProjectsPage } from '../pages/projects.page';
 /* Este archivo contiene pruebas automatizadas para la pagina de Proyectos del Portal Proyectos Mexico y enfocandose principalmente en la pesytaña de Proyectos Nuevos. */
 
 test.describe('Navegación y Filtros Proyectos - Portal Proyectos México', () => {
-    // Este Test verifica la navegacion a la sección de Proyectos y en la pestaña de Proyectos Nuevos
     test('Debe filtrar la lista de proyectos al seleccionar Tamaulipas en el mapa', async ({ page }) => {
-        test.setTimeout(60000); // Aumenta el tiempo de espera a 60 segundos para este test específico
+        test.setTimeout(60000); 
         const projectsPage = new ProjectsPage(page);
         
-        // 1. Navegar a la página principal y entrar a Proyectos
+        // Navegar a la página principal y entrar a Proyectos
         await projectsPage.navigate();
         await projectsPage.goToProjects();
         await expect(page).toHaveURL(/.*public/);
 
-        // 2. Interactuar con el mapa seleccionando el estado dentro de proyectos nuevos
+        // Interactuar con el mapa seleccionando el estado dentro de proyectos nuevos
         await projectsPage.filterByTamaulipas();
 
         await projectsPage.clearFilters();
@@ -23,7 +22,7 @@ test.describe('Navegación y Filtros Proyectos - Portal Proyectos México', () =
     });
 
     test('Seleccionar filtro de Agua y Medio Ambiente y validar la columna Sector', async ({ page }) => {
-        test.setTimeout(60000); // Aumenta el tiempo de espera a 60 segundos para este test específico
+        test.setTimeout(60000); 
         const projectsPage = new ProjectsPage(page);
         
         // Navegar a la página principal y entrar a Proyectos
@@ -44,7 +43,7 @@ test.describe('Navegación y Filtros Proyectos - Portal Proyectos México', () =
 
     test('Seleccionar filtro de Agua y Medio ambiente y validar el dato en el canvas', async ({ page }) => {
         
-        test.setTimeout(60000); // Aumenta el tiempo de espera a 60 segundos para este test específico
+        test.setTimeout(60000); 
         const projectsPage = new ProjectsPage(page);
         
         // Navegar a la página principal y entrar a Proyectos
@@ -63,7 +62,7 @@ test.describe('Navegación y Filtros Proyectos - Portal Proyectos México', () =
     
 
     test('Exportar la información que se muestra en la tabla en PDF', async ({ page }) => {
-        test.setTimeout(60000); // Aumenta el tiempo de espera a 60 segundos para este test específico
+        test.setTimeout(60000); 
         const projectsPage = new ProjectsPage(page);
         // Navegar a la página principal y entrar a Proyectos
         await projectsPage.navigate();
@@ -85,7 +84,7 @@ test.describe('Navegación y Filtros Proyectos - Portal Proyectos México', () =
     
 
     test('Exportar la información que se muestra en la tabla en CSV', async ({ page }) => {
-        test.setTimeout(60000); // Aumenta el tiempo de espera a 60 segundos para este test específico
+        test.setTimeout(60000);
         const projectsPage = new ProjectsPage(page);
         // Navegar a la página principal y entrar a Proyectos
         await projectsPage.navigate();
@@ -104,4 +103,17 @@ test.describe('Navegación y Filtros Proyectos - Portal Proyectos México', () =
         //  exportar la información que se muestra en la tabla a CSV
         await projectsPage.exportTableToCSV();
     });
+
+    test('Verificar que los botones de la paginacion de la tabla se muestren y funcionen correctamente', async ({ page }) => {
+        test.setTimeout(60000);
+        const projectsPage = new ProjectsPage(page);
+        
+        // Navegar a la página principal y entrar a Proyectos
+        await projectsPage.navigate();
+        await projectsPage.goToProjects();
+        await expect(page).toHaveURL(/.*public/);
+
+        await projectsPage.verifyPaginationFunctionality();
+    });
+    
 });
