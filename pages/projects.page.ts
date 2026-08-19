@@ -10,6 +10,9 @@ export class ProjectsPage extends BasePage {
     readonly sectorCheckbox: Locator;
     readonly waterAndEnvironmentCheckbox: Locator;
     readonly cellColumnWaterAndEnvironment: Locator;
+    readonly transportCheckbox: Locator;
+    readonly cellColumnTransport: Locator;
+    readonly btnExportTablePDF: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -21,6 +24,9 @@ export class ProjectsPage extends BasePage {
         this.sectorCheckbox = page.getByRole('checkbox', { name: 'Sector', exact: true });
         this.waterAndEnvironmentCheckbox = page.getByRole('checkbox', { name: 'Agua y Medio Ambiente' });
         this.cellColumnWaterAndEnvironment = page.getByRole('cell', { name: 'Agua y Medio Ambiente' }).first();
+        this.transportCheckbox = page.getByRole('checkbox', { name: 'Transporte' });
+        this.cellColumnTransport = page.getByRole('cell', { name: 'Transporte' }).first();
+        this.btnExportTablePDF = page.locator('app-file-export-component > button').first();
     }
 
     async navigate(): Promise<void> {
@@ -29,6 +35,9 @@ export class ProjectsPage extends BasePage {
 
     async goToProjects(): Promise<void> {
         await this.projectsLink.click();
+        // Esperar a que la página de proyectos cargue completamente
+        await this.page.waitForLoadState('networkidle');
+        await this.page.waitForTimeout(2000);
     }
 
     async filterByTamaulipas(): Promise<void> {
@@ -73,13 +82,35 @@ export class ProjectsPage extends BasePage {
         await this.selectWaterAndEnvironmentCheckbox();
     }
 
-    async scrollToSectorColumn(): Promise<void> {
+    async scrollToSectorColumnWaterAndEnvironment(): Promise<void> {
         await this.cellColumnWaterAndEnvironment.scrollIntoViewIfNeeded();
         await this.page.waitForTimeout(500);
     }
 
     async validateWaterAndEnvironmentVisible(): Promise<boolean> {
-        await this.scrollToSectorColumn();
+        await this.scrollToSectorColumnWaterAndEnvironment();
         return await this.cellColumnWaterAndEnvironment.isVisible();
+    }
+
+
+    async selectTransportCheckbox(): Promise<void> {
+        await this.transportCheckbox.click();
+        await this.page.waitForTimeout(1000);
+    }
+
+    async applyTransportFilter(): Promise<void> {
+        await this.openFilterTable();
+        await this.selectSectorCheckbox();
+        await this.selectTransportCheckbox();
+    }
+
+        async scrollToSectorColumnTransport(): Promise<void> {
+        await this.cellColumnTransport.scrollIntoViewIfNeeded();
+        await this.page.waitForTimeout(500);
+    }
+
+    async exportTableToPDF(): Promise<void> {
+        await this.btnExportTablePDF.click();
+        await this.page.waitForTimeout(1000);
     }
 }
